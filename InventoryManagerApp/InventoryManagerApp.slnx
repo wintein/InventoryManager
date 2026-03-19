@@ -1,4 +1,5 @@
 <Solution>
   <Folder Name="/Элементы решения/" />
   <Project Path="InventoryManagerApp/InventoryManagerApp.csproj" />
+  <Project Path="Tests/Tests.csproj" Id="bef64e9c-775b-439e-a106-36412c71889a" />
 </Solution>
