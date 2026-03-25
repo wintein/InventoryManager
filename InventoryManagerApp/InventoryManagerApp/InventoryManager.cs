@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InventoryManagerApp
 {
-    internal class InventoryManager
+    public class InventoryManager
     {
         public List<InventoryItem> Items { get; private set; }
         public InventoryManager()
