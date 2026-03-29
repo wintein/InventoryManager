@@ -14,67 +14,113 @@
         public InventoryForm()
         {
             this.Text = "Управление инвентарём";
-            this.Width = 500;
-            this.Height = 400;
-            nameTextBox = new TextBox
+            this.Width = 540;
+            this.Height = 350;
+
+            Label nameLabel = new Label
             {
                 Location = new System.Drawing.Point(10, 10),
-                Width = 150,
-                PlaceholderText = "Название"
+                Text = "Название:",
+                Width = 70
+            };
+            nameTextBox = new TextBox
+            {
+                Location = new System.Drawing.Point(85, 7),
+                Width = 120,
+                PlaceholderText = "Введите название"
+            };
+
+            Label quantityLabel = new Label
+            {
+                Location = new System.Drawing.Point(215, 10),
+                Text = "Количество:",
+                Width = 75
             };
             quantityTextBox = new TextBox
             {
-                Location = new System.Drawing.Point(170, 10),
-                Width = 80,
-                PlaceholderText = "Количество"
+                Location = new System.Drawing.Point(295, 7),
+                Width = 60,
+                PlaceholderText = "шт"
+            };
+
+            Label priceLabel = new Label
+            {
+                Location = new System.Drawing.Point(365, 10),
+                Text = "Цена:",
+                Width = 40
             };
             priceTextBox = new TextBox
             {
-                Location = new System.Drawing.Point(260, 10),
-                Width = 100,
-                PlaceholderText = "Цена"
+                Location = new System.Drawing.Point(410, 7),
+                Width = 60,
+                PlaceholderText = "руб"
+            };
+
+            Label categoryLabel = new Label
+            {
+                Location = new System.Drawing.Point(10, 35),
+                Text = "Категория:",
+                Width = 70
             };
             categoryTextBox = new TextBox
             {
-                Location = new System.Drawing.Point(370, 10),
-                Width = 100,
-                PlaceholderText = "Категория"
+                Location = new System.Drawing.Point(85, 32),
+                Width = 120,
+                PlaceholderText = "Введите категорию"
             };
+
             addItemButton = new Button
             {
-                Location = new System.Drawing.Point(10, 40),
+                Location = new System.Drawing.Point(220, 33),
                 Text = "Добавить",
-                Width = 100
+                Width = 90
             };
             addItemButton.Click += AddItemButton_Click;
+
             removeItemButton = new Button
             {
-                Location = new System.Drawing.Point(120, 40),
+                Location = new System.Drawing.Point(315, 33),
                 Text = "Удалить",
-                Width = 100
+                Width = 90
             };
             removeItemButton.Click += RemoveItemButton_Click;
+
             updateQuantityButton = new Button
             {
-                Location = new System.Drawing.Point(220, 40),
+                Location = new System.Drawing.Point(410, 33),
                 Text = "Обновить",
-                Width = 100
+                Width = 90
             };
             updateQuantityButton.Click += UpdateQuantityButton_Click;
+
+            Label itemsListLabel = new Label
+            {
+                Location = new System.Drawing.Point(10, 65),
+                Text = "Список товаров:",
+                Width = 150,
+                Font = new System.Drawing.Font("Arial", 9, System.Drawing.FontStyle.Bold)
+            };
             itemsListBox = new ListBox
             {
-                Location = new System.Drawing.Point(10, 70),
-                Width = 460,
+                Location = new System.Drawing.Point(10, 90),
+                Width = 500,
                 Height = 200
             };
+
+            this.Controls.Add(nameLabel);
             this.Controls.Add(nameTextBox);
+            this.Controls.Add(quantityLabel);
             this.Controls.Add(quantityTextBox);
+            this.Controls.Add(priceLabel);
             this.Controls.Add(priceTextBox);
+            this.Controls.Add(categoryLabel);
             this.Controls.Add(categoryTextBox);
             this.Controls.Add(addItemButton);
             this.Controls.Add(removeItemButton);
             this.Controls.Add(updateQuantityButton);
+            this.Controls.Add(itemsListLabel);
             this.Controls.Add(itemsListBox);
+
             inventoryManager = new InventoryManager();
             UpdateItemsList();
         }
