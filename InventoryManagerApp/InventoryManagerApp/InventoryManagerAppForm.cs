@@ -169,26 +169,33 @@
         {
             if (itemsListBox.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите товар для удаления!");
+                MessageBox.Show("Пожалуйста, выберите товар для удаления!",
+                    "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            string selectedItem = itemsListBox.SelectedItem.ToString();
-            string[] parts = selectedItem.Split(new[] { '-' }, StringSplitOptions.None);
-            if (parts.Length >= 2)
+
+            int selectedIndex = itemsListBox.SelectedIndex;
+            var itemToRemove = inventoryManager.Items[selectedIndex];
+
+            DialogResult result = MessageBox.Show(
+                $"Вы действительно хотите удалить товар \"{itemToRemove.Name}\"?",
+                "Подтверждение удаления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
             {
-                string name = parts[0].Trim();
-                var itemToRemove = inventoryManager.Items.Find(i => i.Name == name);
-                if (itemToRemove != null)
+                try
                 {
-                    try
-                    {
-                        inventoryManager.RemoveItem(itemToRemove);
-                        UpdateItemsList();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    inventoryManager.RemoveItem(itemToRemove);
+                    UpdateItemsList();
+                    MessageBox.Show("Товар успешно удален!", "Успех",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении: {ex.Message}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
