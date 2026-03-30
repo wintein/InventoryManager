@@ -203,37 +203,63 @@
         {
             if (itemsListBox.SelectedIndex == -1)
             {
-                MessageBox.Show("Выберите товар для обновления!");
+                MessageBox.Show("Пожалуйста, выберите товар для обновления количества!",
+                    "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            string selectedItem = itemsListBox.SelectedItem.ToString();
-            string[] parts = selectedItem.Split(new[] { '-' }, StringSplitOptions.None);
-            if (parts.Length >= 2)
+
+            if (string.IsNullOrEmpty(quantityTextBox.Text))
             {
-                string name = parts[0].Trim();
-                var itemToUpdate = inventoryManager.Items.Find(i => i.Name == name);
-                if (itemToUpdate != null)
+                MessageBox.Show("Пожалуйста, введите новое количество товара!",
+                    "Внимание", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int selectedIndex = itemsListBox.SelectedIndex;
+            var itemToUpdate = inventoryManager.Items[selectedIndex];
+
+            int newQuantity;
+            if (!int.TryParse(quantityTextBox.Text, out newQuantity))
+            {
+                MessageBox.Show("Неверный формат количества! Пожалуйста, введите целое число.",
+                    "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (newQuantity < 0)
+            {
+                MessageBox.Show("Количество товара не может быть отрицательным! " +
+                    "Введите неотрицательное число.",
+                    "Ошибка ввода", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                $"Товар: {itemToUpdate.Name}\n" +
+                $"Текущее количество: {itemToUpdate.Quantity} шт.\n" +
+                $"Новое количество: {newQuantity} шт.\n\n" +
+                $"Вы действительно хотите обновить количество?",
+                "Подтверждение обновления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
                 {
-                    if (string.IsNullOrEmpty(quantityTextBox.Text))
-                    {
-                        MessageBox.Show("Введите новое количество!");
-                        return;
-                    }
-                    int newQuantity;
-                    if (!int.TryParse(quantityTextBox.Text, out newQuantity))
-                    {
-                        MessageBox.Show("Неверный формат количества!");
-                        return;
-                    }
-                    try
-                    {
-                        inventoryManager.UpdateItemQuantity(itemToUpdate, newQuantity);
-                        UpdateItemsList();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
+                    inventoryManager.UpdateItemQuantity(itemToUpdate, newQuantity);
+                    UpdateItemsList();
+
+                    quantityTextBox.Clear();
+
+                    MessageBox.Show($"Количество товара \"{itemToUpdate.Name}\" успешно обновлено!\n" +
+                        $"Новое количество: {newQuantity} шт.",
+                        "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при обновлении количества: {ex.Message}",
+                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
